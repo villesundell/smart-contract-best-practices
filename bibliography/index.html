@@ -1,0 +1,670 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://github.com/ConsenSys/smart-contract-best-practices/bibliography/">
+      
+      
+        <meta name="author" content="ConsenSys">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.5">
+    
+    
+      
+        <title>Smart Contract Security Bibliography - Ethereum Smart Contract Best Practices</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.bcabdff3.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    <body>
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://github.com/ConsenSys/smart-contract-best-practices" title="Ethereum Smart Contract Best Practices" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Ethereum Smart Contract Best Practices
+              </span>
+              <span class="md-header-nav__topic">
+                Smart Contract Security Bibliography
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/ConsenSys/smart-contract-best-practices/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </span>
+    Ethereum Smart Contract Best Practices
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/ConsenSys/smart-contract-best-practices/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../general_philosophy/" title="General Philosophy" class="md-nav__link">
+      General Philosophy
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../recommendations/" title="Recommendations for Smart Contract Security in Solidity" class="md-nav__link">
+      Recommendations for Smart Contract Security in Solidity
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../known_attacks/" title="Known Attacks" class="md-nav__link">
+      Known Attacks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../software_engineering/" title="Software Engineering Techniques" class="md-nav__link">
+      Software Engineering Techniques
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../tokens/" title="Token specific recommendations" class="md-nav__link">
+      Token specific recommendations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../documentation_procedures/" title="Documentation and Procedures" class="md-nav__link">
+      Documentation and Procedures
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../security_tools/" title="Security Tools" class="md-nav__link">
+      Security Tools
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../security_eips/" title="Security EIPs" class="md-nav__link">
+      Security EIPs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../security_notifications/" title="Security Notifications" class="md-nav__link">
+      Security Notifications
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Smart Contract Security Bibliography
+      </label>
+    
+    <a href="./" title="Smart Contract Security Bibliography" class="md-nav__link md-nav__link--active">
+      Smart Contract Security Bibliography
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#by-ethereum-core-developers" title="By Ethereum core developers" class="md-nav__link">
+    By Ethereum core developers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#by-community" title="By Community" class="md-nav__link">
+    By Community
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../bug_bounty_list/" title="List of Smart Contract Bug Bounty Programs" class="md-nav__link">
+      List of Smart Contract Bug Bounty Programs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13">
+    
+    <label class="md-nav__link" for="nav-13">
+      About
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-13">
+        About
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../about/reviewers/" title="Reviewers" class="md-nav__link">
+      Reviewers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../about/license/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../about/contributing/" title="Contributing" class="md-nav__link">
+      Contributing
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#by-ethereum-core-developers" title="By Ethereum core developers" class="md-nav__link">
+    By Ethereum core developers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#by-community" title="By Community" class="md-nav__link">
+    By Community
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ConsenSys/smart-contract-best-practices/edit/master/docs/bibliography.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Smart Contract Security Bibliography</h1>
+                
+                <p>A lot of this document contains code, examples and insights gained from various parts already written by the community.
+Here are some of them.  Feel free to add more.</p>
+<h5 id="by-ethereum-core-developers">By Ethereum core developers<a class="headerlink" href="#by-ethereum-core-developers" title="Permanent link">&para;</a></h5>
+<ul>
+<li><a href="https://chriseth.github.io/notes/talks/safe_solidity">How to Write Safe Smart Contracts</a> (Christian Reitwiessner)</li>
+<li><a href="https://blog.ethereum.org/2016/06/10/smart-contract-security/">Smart Contract Security</a> (Christian Reitwiessner)</li>
+<li><a href="https://blog.ethereum.org/2016/06/19/thinking-smart-contract-security/">Thinking about Smart Contract Security</a> (Vitalik Buterin)</li>
+<li><a href="http://solidity.readthedocs.io">Solidity</a></li>
+<li><a href="http://solidity.readthedocs.io/en/latest/security-considerations.html">Solidity Security Considerations</a></li>
+</ul>
+<h5 id="by-community">By Community<a class="headerlink" href="#by-community" title="Permanent link">&para;</a></h5>
+<ul>
+<li><a href="https://blog.sigmaprime.io/solidity-security.html">https://blog.sigmaprime.io/solidity-security.html</a></li>
+<li><a href="http://forum.ethereum.org/discussion/1317/reentrant-contracts">http://forum.ethereum.org/discussion/1317/reentrant-contracts</a></li>
+<li><a href="http://hackingdistributed.com/2016/06/16/scanning-live-ethereum-contracts-for-bugs/">http://hackingdistributed.com/2016/06/16/scanning-live-ethereum-contracts-for-bugs/</a></li>
+<li><a href="http://hackingdistributed.com/2016/06/18/analysis-of-the-dao-exploit/">http://hackingdistributed.com/2016/06/18/analysis-of-the-dao-exploit/</a></li>
+<li><a href="http://hackingdistributed.com/2016/06/22/smart-contract-escape-hatches/">http://hackingdistributed.com/2016/06/22/smart-contract-escape-hatches/</a></li>
+<li><a href="http://martin.swende.se/blog/Devcon1-and-contract-security.html">http://martin.swende.se/blog/Devcon1-and-contract-security.html</a></li>
+<li><a href="http://publications.lib.chalmers.se/records/fulltext/234939/234939.pdf">http://publications.lib.chalmers.se/records/fulltext/234939/234939.pdf</a></li>
+<li><a href="http://vessenes.com/deconstructing-thedao-attack-a-brief-code-tour">http://vessenes.com/deconstructing-thedao-attack-a-brief-code-tour</a></li>
+<li><a href="http://vessenes.com/ethereum-griefing-wallets-send-w-throw-considered-harmful">http://vessenes.com/ethereum-griefing-wallets-send-w-throw-considered-harmful</a></li>
+<li><a href="http://vessenes.com/more-ethereum-attacks-race-to-empty-is-the-real-deal">http://vessenes.com/more-ethereum-attacks-race-to-empty-is-the-real-deal</a></li>
+<li><a href="https://blog.blockstack.org/simple-contracts-are-better-contracts-what-we-can-learn-from-the-dao-6293214bad3a">https://blog.blockstack.org/simple-contracts-are-better-contracts-what-we-can-learn-from-the-dao-6293214bad3a</a></li>
+<li><a href="https://blog.slock.it/deja-vu-dao-smart-contracts-audit-results-d26bc088e32e">https://blog.slock.it/deja-vu-dao-smart-contracts-audit-results-d26bc088e32e</a></li>
+<li><a href="https://blog.vdice.io/wp-content/uploads/2016/11/vsliceaudit_v1.3.pdf">https://blog.vdice.io/wp-content/uploads/2016/11/vsliceaudit_v1.3.pdf</a></li>
+<li><a href="https://eprint.iacr.org/2016/1007.pdf">https://eprint.iacr.org/2016/1007.pdf</a></li>
+<li><a href="https://github.com/Bunjin/Rouleth/blob/master/Security.md">https://github.com/Bunjin/Rouleth/blob/master/Security.md</a></li>
+<li><a href="https://github.com/LeastAuthority/ethereum-analyses">https://github.com/LeastAuthority/ethereum-analyses</a></li>
+<li><a href="https://github.com/bokkypoobah/ParityMultisigRecoveryReconciliation">https://github.com/bokkypoobah/ParityMultisigRecoveryReconciliation</a></li>
+<li><a href="https://medium.com/@ConsenSys/assert-guards-towards-automated-code-bounties-safe-smart-contract-coding-on-ethereum-8e74364b795c">https://medium.com/@ConsenSys/assert-guards-towards-automated-code-bounties-safe-smart-contract-coding-on-ethereum-8e74364b795c</a></li>
+<li><a href="https://medium.com/@coriacetic/in-bits-we-trust-4e464b418f0b">https://medium.com/@coriacetic/in-bits-we-trust-4e464b418f0b</a></li>
+<li><a href="https://medium.com/@hrishiolickel/why-smart-contracts-fail-undiscovered-bugs-and-what-we-can-do-about-them-119aa2843007">https://medium.com/@hrishiolickel/why-smart-contracts-fail-undiscovered-bugs-and-what-we-can-do-about-them-119aa2843007</a></li>
+<li><a href="https://medium.com/@peterborah/we-need-fault-tolerant-smart-contracts-ec1b56596dbc">https://medium.com/@peterborah/we-need-fault-tolerant-smart-contracts-ec1b56596dbc</a></li>
+<li><a href="https://medium.com/zeppelin-blog/zeppelin-framework-proposal-and-development-roadmap-fdfa9a3a32ab">https://medium.com/zeppelin-blog/zeppelin-framework-proposal-and-development-roadmap-fdfa9a3a32ab</a></li>
+<li><a href="https://pdaian.com/blog/chasing-the-dao-attackers-wake">https://pdaian.com/blog/chasing-the-dao-attackers-wake</a></li>
+<li><a href="http://www.comp.nus.edu.sg/~loiluu/papers/oyente.pdf">http://www.comp.nus.edu.sg/~loiluu/papers/oyente.pdf</a></li>
+</ul>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        <!--
+  Copyright (c) 2016-2018 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+
+
+<!-- Application footer -->
+<footer class="md-footer">
+
+  <!-- Link to previous and/or next page -->
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+
+        <!-- Link to previous page -->
+        
+          <a href="../security_notifications/"
+              title="Security Notifications"
+              class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+              rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back
+                    md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch
+                  md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Security Notifications
+              </span>
+            </div>
+          </a>
+        
+
+        <!-- Link to next page -->
+        
+          <a href="../bug_bounty_list/" title="List of Smart Contract Bug Bounty Programs"
+              class="md-flex md-footer-nav__link md-footer-nav__link--next"
+              rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch
+                  md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                List of Smart Contract Bug Bounty Programs
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward
+                    md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+
+  <!-- Further information -->
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+
+      <!-- Copyright and theme information -->
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+
+      <!-- Customization: Diligence info -->
+      <div class="md-footer-diligence">
+
+        maintained by
+        <a href="https://diligence.consensys.net" target="_blank" rel="noopener">
+          <img src="../assets/images/diligence_logo.svg" />
+          ConsenSys Diligence
+        </a>
+      </div>
+
+      <!-- Social links -->
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.6cdc17f0.js"></script>
+      
+      <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
