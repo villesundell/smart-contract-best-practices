@@ -233,8 +233,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../recommendations/" title="Recommendations for Smart Contract Security in Solidity" class="md-nav__link">
-      Recommendations for Smart Contract Security in Solidity
+    <a href="../recommendations/" title="Solidity Recommendations" class="md-nav__link">
+      Solidity Recommendations
     </a>
   </li>
 
@@ -302,8 +302,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#front-running-aka-transaction-ordering-dependence" title="Front Running (AKA Transaction-Ordering Dependence)" class="md-nav__link">
-    Front Running (AKA Transaction-Ordering Dependence)
+  <a href="#front-running-aka-transaction-ordering-dependence" title="Front-Running (AKA Transaction-Ordering Dependence)" class="md-nav__link">
+    Front-Running (AKA Transaction-Ordering Dependence)
   </a>
   
 </li>
@@ -492,8 +492,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../security_notifications/" title="Security Notifications" class="md-nav__link">
-      Security Notifications
+    <a href="../security_notifications/" title="Security Resources" class="md-nav__link">
+      Security Resources
     </a>
   </li>
 
@@ -504,20 +504,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../bibliography/" title="Smart Contract Security Bibliography" class="md-nav__link">
-      Smart Contract Security Bibliography
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../bug_bounty_list/" title="List of Smart Contract Bug Bounty Programs" class="md-nav__link">
-      List of Smart Contract Bug Bounty Programs
+    <a href="../bug_bounty_list/" title="Bug Bounty Programs" class="md-nav__link">
+      Bug Bounty Programs
     </a>
   </li>
 
@@ -529,13 +517,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-12" type="checkbox" id="nav-12">
     
-    <label class="md-nav__link" for="nav-13">
+    <label class="md-nav__link" for="nav-12">
       About
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-13">
+      <label class="md-nav__title" for="nav-12">
         About
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -635,8 +623,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#front-running-aka-transaction-ordering-dependence" title="Front Running (AKA Transaction-Ordering Dependence)" class="md-nav__link">
-    Front Running (AKA Transaction-Ordering Dependence)
+  <a href="#front-running-aka-transaction-ordering-dependence" title="Front-Running (AKA Transaction-Ordering Dependence)" class="md-nav__link">
+    Front-Running (AKA Transaction-Ordering Dependence)
   </a>
   
 </li>
@@ -771,7 +759,7 @@
                 
                 <p>The following is a list of known attacks which you should be aware of, and defend against when writing smart contracts.</p>
 <h2 id="reentrancy">Reentrancy<a class="headerlink" href="#reentrancy" title="Permanent link">&para;</a></h2>
-<p>One of the major dangers of calling external contracts is that they can take over the control flow, and make changes to your data that the calling function wasn't expecting. This class of bug can take many forms, and both of the major bugs that led to the DAO's collapse were bugs of this sort.</p>
+<p>One of the major dangers of <a href="../recommendations#external-calls">calling external contracts</a> is that they can take over the control flow, and make changes to your data that the calling function wasn't expecting. This class of bug can take many forms, and both of the major bugs that led to the DAO's collapse were bugs of this sort.</p>
 <h3 id="reentrancy-on-a-single-function">Reentrancy on a Single Function<a class="headerlink" href="#reentrancy-on-a-single-function" title="Permanent link">&para;</a></h3>
 <p>The first version of this bug to be noticed involved functions that could be called repeatedly, before the first invocation of the function was finished. This may cause the different invocations of the function to interact in destructive ways.</p>
 <div class="highlight"><pre><span></span><span class="c1">// INSECURE</span>
@@ -784,8 +772,14 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>Since the user's balance is not set to 0 until the very end of the function, the second (and later) invocations will still succeed, and will withdraw the balance over and over again. A very similar bug was one of the vulnerabilities in the DAO attack.</p>
-<p>In the example given, the best way to avoid the problem is to <a href="../recommendations#send-vs-call-value">use <code>send()</code> instead of <code>call.value()()</code></a>. This will prevent any external code from being executed.</p>
+<p>Since the user's balance is not set to 0 until the very end of the function, the second (and later) invocations will still succeed, and will withdraw the balance over and over again.</p>
+<div class="admonition factoid">
+<p class="admonition-title">Factoid</p>
+<p>A DAO is a Decentralized Autonomous Organization. Its goal is to codify the rules and decisionmaking apparatus of an organization, eliminating the need for documents and people in governing, creating a structure with decentralized control.</p>
+<p>On June 17<sup>th</sup> 2016, <a href="https://www.coindesk.com/understanding-dao-hack-journalists">The DAO</a> was hacked and 3.6 million Ether ($50 Million) were stolen using the first reentrancy attack.</p>
+<p>Ethereum Foundation issued a critical update to rollback the hack. This resulted in Ethereum being forked into Ethereum Classic and Ethereum.</p>
+</div>
+<p>In the example given, the best mitigation method is to <a href="../recommendations#send-vs-call-value">use <code>send()</code> instead of <code>call.value()()</code></a>. This will limit any external code from being executed.</p>
 <p>However, if you can't remove the external call, the next simplest way to prevent this attack is to make sure you don't call an external function until you've done all the internal work you need to do:</p>
 <div class="highlight"><pre><span></span><span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="kr">private</span> <span class="n">userBalances</span><span class="p">;</span>
 
@@ -820,7 +814,7 @@
 <p>The same solutions will work, with the same caveats. Also note that in this example, both functions were part of the same contract. However, the same bug can occur across multiple contracts, if those contracts share state.</p>
 <h3 id="pitfalls-in-reentrancy-solutions">Pitfalls in Reentrancy Solutions<a class="headerlink" href="#pitfalls-in-reentrancy-solutions" title="Permanent link">&para;</a></h3>
 <p>Since reentrancy can occur across multiple functions, and even multiple contracts, any solution aimed at preventing reentrancy with a single function will not be sufficient.</p>
-<p>Instead, we have recommended finishing all internal work (ie. state changes) first, and only then calling the external function. This rule, if followed carefully, will allow you to avoid vulnerabilities due to reentrancy. However, you need to not only avoid calling external functions too soon, but also avoid calling functions which call external functions. For example, the following is insecure:</p>
+<p>Instead, <strong>we have recommended finishing all internal work (ie. state changes) first, and only then calling the external function</strong>. This rule, if followed carefully, will allow you to avoid vulnerabilities due to reentrancy. However, you need to not only avoid calling external functions too soon, but also avoid calling functions which call external functions. For example, the following is insecure:</p>
 <div class="highlight"><pre><span></span><span class="c1">// INSECURE</span>
 <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="kr">private</span> <span class="n">userBalances</span><span class="p">;</span>
 <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">bool</span><span class="p">)</span> <span class="kr">private</span> <span class="n">claimedBonus</span><span class="p">;</span>
@@ -912,12 +906,18 @@
 </pre></div>
 
 <p>An attacker can call <code>getLock()</code>, and then never call <code>releaseLock()</code>. If they do this, then the contract will be locked forever, and no further changes will be able to be made. If you use mutexes to protect against reentrancy, you will need to carefully ensure that there are no ways for a lock to be claimed and never released. (There are other potential dangers when programming with mutexes, such as deadlocks and livelocks. You should consult the large amount of literature already written on mutexes, if you decide to go this route.)</p>
-<h2 id="front-running-aka-transaction-ordering-dependence">Front Running (AKA Transaction-Ordering Dependence)<a class="headerlink" href="#front-running-aka-transaction-ordering-dependence" title="Permanent link">&para;</a></h2>
-<p>Above were examples of reentrancy involving the attacker executing malicious code <em>within a single transaction</em>. The following are a different type of attack inherent to Blockchains: the fact that <em>the order of transactions themselves</em> (within a block) is easily subject to manipulation.</p>
-<p>Since a transaction is in the mempool for a short while, one can know what actions will occur, before it is included in a block. This can be troublesome for things like decentralized markets, where a transaction to buy some tokens can be seen, and a market order implemented before the other transaction gets included. Protecting against this is difficult, as it would come down to the specific contract itself. For example, in markets, it would be better to implement batch auctions (this also protects against high frequency trading concerns). Another way to use a pre-commit scheme (“I’m going to submit the details later”).</p>
+<hr />
+<h2 id="front-running-aka-transaction-ordering-dependence">Front-Running (AKA Transaction-Ordering Dependence)<a class="headerlink" href="#front-running-aka-transaction-ordering-dependence" title="Permanent link">&para;</a></h2>
+<p>Above were examples of reentrancy involving the attacker executing malicious code <em>within a single transaction</em>. The following are a different type of attack inherent to Blockchains: the fact that <em>the order of transactions themselves</em> (e.g. within a block) is easily subject to manipulation.</p>
+<p>Since a transaction is in the mempool for a short while, one can know what actions will occur before it is included in a block. This can be troublesome for things like decentralized markets, where a transaction to buy some tokens can be seen, and a market order implemented before the other transaction gets included. Protecting against this is difficult, as it would come down to the specific contract itself. For example, in markets, it would be better to implement batch auctions (this also protects against high frequency trading concerns). Another way to use a pre-commit scheme (“I’m going to submit the details later”).</p>
+<hr />
 <h2 id="timestamp-dependence">Timestamp Dependence<a class="headerlink" href="#timestamp-dependence" title="Permanent link">&para;</a></h2>
 <p>Be aware that the timestamp of the block can be manipulated by the miner, and all direct and indirect uses of the timestamp should be considered.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>See the <a href="../recommendations/#timestamp-dependence">Recommendations</a> section for design considerations related to Timestamp Dependence.</p>
+</div>
+<hr />
 <h2 id="integer-overflow-and-underflow">Integer Overflow and Underflow<a class="headerlink" href="#integer-overflow-and-underflow" title="Permanent link">&para;</a></h2>
 <p>Consider a simple token transfer:</p>
 <div class="highlight"><pre><span></span><span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint256</span><span class="p">)</span> <span class="kr">public</span> <span class="n">balanceOf</span><span class="p">;</span>
@@ -942,10 +942,14 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>If a balance reaches the maximum uint value (2^256) it will circle back to zero. This checks for that condition. This may or may not be relevant, depending on the implementation. Think about whether or not the uint value has an opportunity to approach such a large number. Think about how the uint variable changes state, and who has authority to make such changes. If any user can call functions which update the uint value, it's more vulnerable to attack. If only an admin has access to change the variable's state, you might be safe. If a user can increment by only 1 at a time, you are probably also safe because there is no feasible way to reach this limit.</p>
+<p>If a balance reaches the <em>maximum uint value (2^256)</em> it will circle back to zero which checks for the condition. This may or may not be relevant, depending on the implementation. Think about whether or not the <code>uint</code> value has an opportunity to approach such a large number. Think about how the <code>uint</code> variable changes state, and who has authority to make such changes. If any user can call functions which update the <code>uint</code> value, it's more vulnerable to attack. If only an admin has access to change the variable's state, you might be safe. If a user can increment by only 1 at a time, you are probably also safe because there is no feasible way to reach this limit.</p>
 <p>The same is true for underflow. If a uint is made to be less than zero, it will cause an underflow and get set to its maximum value.</p>
 <p>Be careful with the smaller data-types like uint8, uint16, uint24...etc: they can even more easily hit their maximum value.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>Be aware there are around <a href="https://github.com/ethereum/solidity/issues/796#issuecomment-253578925">20 cases for overflow and underflow</a>.</p>
+</div>
+<p>One simple solution to mitigate the common mistakes for overflow and underflow is to use <code>SafeMath.sol</code> <a href="https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol">library</a> for arithmetic functions.</p>
 <h3 id="underflow-in-depth-storage-manipulation">Underflow in Depth: Storage Manipulation<a class="headerlink" href="#underflow-in-depth-storage-manipulation" title="Permanent link">&para;</a></h3>
 <p><a href="https://github.com/Arachnid/uscc/tree/master/submissions-2017/doughoyte">Doug Hoyte's submission</a> to the 2017 underhanded solidity contest received <a href="http://u.solidity.cc/">an honorable mention</a>. The entry is interesting, because it raises the concerns about how C-like underflow might affect Solidity storage. Here is a simplified version:</p>
 <div class="highlight"><pre><span></span><span class="kd">contract</span> <span class="n">UnderflowManipulation</span> <span class="p">{</span>
@@ -980,8 +984,12 @@
 <li>Compute the storage location of <code>manipulateMe</code></li>
 <li>Modify and update <code>manipulateMe</code>'s value using <code>modifyBonusCode</code></li>
 </ul>
-<p>In practice, this array would be immediately pointed out as fishy, but buried under more complex smart contract architecture, it can arbitrarily allow malicious changes to constant variables.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In practice, this array would be immediately pointed out as fishy, but buried under more complex smart contract architecture, it can arbitrarily allow malicious changes to constant variables, such as total supply of a token.</p>
+</div>
 <p>When considering use of a dynamic array, a container data scructure is a good practice. The Solidity CRUD <a href="https://medium.com/@robhitchens/solidity-crud-part-1-824ffa69509a">part 1</a> and <a href="https://medium.com/@robhitchens/solidity-crud-part-2-ed8d8b4f74ec">part 2</a> articles are good resources.</p>
+<hr />
 <p><a name="dos-with-unexpected-revert"></a></p>
 <h2 id="dos-with-unexpected-revert">DoS with (Unexpected) revert<a class="headerlink" href="#dos-with-unexpected-revert" title="Permanent link">&para;</a></h2>
 <p>Consider a simple auction contract:</p>
@@ -1001,7 +1009,7 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>When it tries to refund the old leader, it reverts if the refund fails. This means that a malicious bidder can become the leader while making sure that any refunds to their address will <em>always</em> fail. In this way, they can prevent anyone else from calling the <code>bid()</code> function, and stay the leader forever. A recommendation is to set up a <a href="../recommendations#favor-pull-over-push-for-external-calls">pull payment system</a> instead, as described earlier.</p>
+<p>If attacker bids using a smart contract which has a fallback function that reverts any payment, the attacker can win any auction. When it tries to refund the old leader, it reverts if the refund fails. This means that a malicious bidder can become the leader while making sure that any refunds to their address will <em>always</em> fail. In this way, they can prevent anyone else from calling the <code>bid()</code> function, and stay the leader forever. A recommendation is to set up a <a href="../recommendations#favor-pull-over-push-for-external-calls">pull payment system</a> instead, as described earlier.</p>
 <p>Another example is when a contract may iterate through an array to pay users (e.g., supporters in a crowdfunding contract). It's common to want to make sure that each payment succeeds. If not, one should revert. The issue is that if one call fails, you are reverting the whole payout system, meaning the loop will never complete. No one gets paid because one address is forcing an error.</p>
 <div class="highlight"><pre><span></span><span class="kt">address</span><span class="p">[]</span> <span class="kr">private</span> <span class="n">refundAddresses</span><span class="p">;</span>
 <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="kr">public</span> <span class="n">refunds</span><span class="p">;</span>
@@ -1015,6 +1023,7 @@
 </pre></div>
 
 <p>Again, the recommended solution is to <a href="../recommendations#favor-pull-over-push-for-external-calls">favor pull over push payments</a>.</p>
+<hr />
 <h2 id="dos-with-block-gas-limit">DoS with Block Gas Limit<a class="headerlink" href="#dos-with-block-gas-limit" title="Permanent link">&para;</a></h2>
 <p>Each block has an upper bound on the amount of gas that can be spent, and thus the amount computation that can be done. This is the Block Gas Limit. If the gas spent exceeds this limit, the transaction will fail. This leads to a couple possible Denial of Service vectors:</p>
 <h3 id="gas-limit-dos-on-a-contract-via-unbounded-operations">Gas Limit DoS on a Contract via Unbounded Operations<a class="headerlink" href="#gas-limit-dos-on-a-contract-via-unbounded-operations" title="Permanent link">&para;</a></h3>
@@ -1047,6 +1056,7 @@
 <p>If the attack succeeds, no other transactions will be included in the block. Sometimes, an attacker's goal is to block transactions to a specific contract prior to specific time.</p>
 <p>This attack <a href="https://osolmaz.com/2018/10/18/anatomy-block-stuffing">was conducted</a> on Fomo3D, a gambling app. The app was designed to reward the last address that purchased a "key". Each key purchase extended the timer, and the game ended once the timer went to 0. The attacker bought a key and then stuffed 13 blocks in a row until the timer was triggered and the payout was released. Transactions sent by attacker took 7.9 million gas on each block, so the gas limit allowed a few small "send" transactions (which take 21,000 gas each), but disallowed any calls to the <code>buyKey()</code> function (which costs 300,000+ gas).</p>
 <p>A Block Stuffing attack can be used on any contract requiring an action within a certain time period. However, as with any attack, it is only profitable when the expected reward exceeds its cost. Cost of this attack is directly proportional to the number of blocks which need to be stuffed. If a large payout can be obtained by preventing actions from other participants, your contract will likely be targeted by such an attack.</p>
+<hr />
 <h2 id="insufficient-gas-griefing">Insufficient gas griefing<a class="headerlink" href="#insufficient-gas-griefing" title="Permanent link">&para;</a></h2>
 <p>This attack may be possible on a contract which accepts generic data and uses it to make a call another contract (a 'sub-call') via the low level <code>address.call()</code> function, as is often the case with multisignature and transaction relayer contracts.</p>
 <p>If the call fails, the contract has two options:</p>
@@ -1069,7 +1079,10 @@
 
 <p>This contract allows transaction relaying. Someone who wants to make a transaction but can't execute it by himself (e.g. due to the lack of ether to pay for gas) can sign data that he wants to pass and transfer the data with his signature over any medium. A third party "forwarder" can then submit this transaction to the network on behalf of the user.</p>
 <p>If given just the right amount of gas, the <code>Relayer</code> would complete execution recording the <code>_data</code>argument in the <code>executed</code> mapping, but the subcall would fail because it received insufficient gas to complete execution.</p>
-<p>Note: When a contract makes a sub-call to another contract, the EVM limits the gas forwarded to <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md">to 63/64 of the remaining gas</a>,</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When a contract makes a sub-call to another contract, the EVM limits the gas forwarded to <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md">to 63/64 of the remaining gas</a>,</p>
+</div>
 <p>An attacker can use this to censor transactions, causing them to fail by sending them with a low amount of gas. This attack is a form of "<a href="https://en.wikipedia.org/wiki/Griefer">griefing</a>": It doesn't directly benefit the attacker, but causes grief for the victim. A dedicated attacker, willing to consistently spend a small amount of gas could theoretically censor all transactions this way, if they were the first to submit them to <code>Relayer</code>.</p>
 <p>One way to address this is to implement logic requiring forwarders to provide enough gas to finish the subcall. If the miner tried to conduct the attack in this scenario, the <code>require</code> statement would fail and the inner call would revert. A user can specify a minimum gasLimit along with the other data (in this example, typically the <code>_gasLimit</code> value would be verified by a signature, but that is ommitted for simplicity in this case).</p>
 <div class="highlight"><pre><span></span><span class="c1">// contract called by Relayer</span>
@@ -1082,6 +1095,7 @@
 </pre></div>
 
 <p>Another solution is to permit only trusted accounts to relay the transaction.</p>
+<hr />
 <h2 id="forcibly-sending-ether-to-a-contract">Forcibly Sending Ether to a Contract<a class="headerlink" href="#forcibly-sending-ether-to-a-contract" title="Permanent link">&para;</a></h2>
 <p>It is possible to forcibly send Ether to a contract without triggering its fallback function. This is an important consideration when placing important logic in the fallback function or making calculations based on a contract's balance. Take the following example:</p>
 <div class="highlight"><pre><span></span><span class="kd">contract</span> <span class="n">Vulnerable</span> <span class="p">{</span>
@@ -1098,8 +1112,11 @@
 
 <p>Contract logic seems to disallow payments to the contract and therefore disallow "something bad" from happening. However, a few methods exist for forcibly sending ether to the contract and therefore making its balance greater than zero.</p>
 <p>The <code>selfdestruct</code> contract method allows a user to specify a beneficiary to send any excess ether. <code>selfdestruct</code> <a href="https://solidity.readthedocs.io/en/develop/security-considerations.html#sending-and-receiving-ether">does not trigger a contract's fallback function</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>It is also possible to <a href="https://github.com/Arachnid/uscc/tree/master/submissions-2017/ricmoo">precompute</a> a contract's address and send Ether to that address before deploying the contract.</p>
-<p>Contract developers should be aware that Ether can be forcibly sent to a contract and should design contract logic accordingly. Generally, assume that it is not possible to restrict sources of funding to your contract.</p>
+</div>
+<hr />
 <h2 id="deprecatedhistorical-attacks">Deprecated/historical attacks<a class="headerlink" href="#deprecatedhistorical-attacks" title="Permanent link">&para;</a></h2>
 <p>These are attacks which are no longer possible due to changes in the protocol or improvements to solidity. They are recorded here for posterity and awareness.</p>
 <h3 id="call-depth-attack-deprecated">Call Depth Attack (deprecated)<a class="headerlink" href="#call-depth-attack-deprecated" title="Permanent link">&para;</a></h3>
@@ -1156,7 +1173,7 @@
         <!-- Link to previous page -->
         
           <a href="../recommendations/"
-              title="Recommendations for Smart Contract Security in Solidity"
+              title="Solidity Recommendations"
               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
               rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -1169,7 +1186,7 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Recommendations for Smart Contract Security in Solidity
+                Solidity Recommendations
               </span>
             </div>
           </a>
