@@ -1130,7 +1130,7 @@ specific value transfers safe against reentrancy.</p>
 
 <hr />
 <h4 id="favor-pull-over-push-for-external-calls">Favor <em>pull</em> over <em>push</em> for external calls<a class="headerlink" href="#favor-pull-over-push-for-external-calls" title="Permanent link">&para;</a></h4>
-<p>External calls can fail accidentally or deliberately. To minimize the damage caused by such failures, it is often better to isolate each external call into its own transaction that can be initiated by the recipient of the call. This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of <a href="../known_attacks#dos-with-block-gas-limit">problems with the gas limit</a>.)  Avoid combining multiple <code>send()</code> calls in a single transaction.</p>
+<p>External calls can fail accidentally or deliberately. To minimize the damage caused by such failures, it is often better to isolate each external call into its own transaction that can be initiated by the recipient of the call. This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of <a href="../known_attacks#dos-with-block-gas-limit">problems with the gas limit</a>.)  Avoid combining multiple <code>transfer()</code> calls in a single transaction.</p>
 <div class="highlight"><pre><span></span><span class="c1">// bad</span>
 <span class="kd">contract</span> <span class="n">auction</span> <span class="p">{</span>
     <span class="kt">address</span> <span class="n">highestBidder</span><span class="p">;</span>
