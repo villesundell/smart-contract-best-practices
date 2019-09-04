@@ -293,8 +293,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#be-aware-of-the-tradeoffs-between-send-transfer-and-callvalue" title="Be aware of the tradeoffs between send(), transfer(), and call.value()()" class="md-nav__link">
-    Be aware of the tradeoffs between send(), transfer(), and call.value()()
+  <a href="#avoid-transfer-and-send" title="Avoid transfer() and send()." class="md-nav__link">
+    Avoid transfer() and send().
   </a>
   
 </li>
@@ -778,8 +778,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#be-aware-of-the-tradeoffs-between-send-transfer-and-callvalue" title="Be aware of the tradeoffs between send(), transfer(), and call.value()()" class="md-nav__link">
-    Be aware of the tradeoffs between send(), transfer(), and call.value()()
+  <a href="#avoid-transfer-and-send" title="Avoid transfer() and send()." class="md-nav__link">
+    Avoid transfer() and send().
   </a>
   
 </li>
@@ -1092,45 +1092,30 @@
 <p>One particular danger is malicious code may hijack the control flow, leading to vulnerabilities due to reentrancy. (See <a href="../known_attacks#reentrancy">Reentrancy</a> for a fuller discussion of this problem).</p>
 <p>If you are making a call to an untrusted external contract, <em>avoid state changes after the call</em>. This pattern is also sometimes known as the <a href="http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern">checks-effects-interactions pattern</a>.</p>
 <hr />
-<h4 id="be-aware-of-the-tradeoffs-between-send-transfer-and-callvalue">Be aware of the tradeoffs between <code>send()</code>, <code>transfer()</code>, and <code>call.value()()</code><a class="headerlink" href="#be-aware-of-the-tradeoffs-between-send-transfer-and-callvalue" title="Permanent link">&para;</a></h4>
-<p>When sending ether be aware of the relative tradeoffs between the use of
-<code>someAddress.send()</code>, <code>someAddress.transfer()</code>, and <code>someAddress.call.value()()</code>.</p>
-<ul>
-<li><code>someAddress.send()</code>and <code>someAddress.transfer()</code> are considered <em>safe</em> against <a href="../known_attacks#reentrancy">reentrancy</a>.
-    While these methods still trigger code execution, the called contract is
-    only given a stipend of 2,300 gas which is currently only enough to log an
-    event.</li>
-<li><code>x.transfer(y)</code> is equivalent to <code>require(x.send(y));</code>, it will automatically revert if the send fails.</li>
-<li><code>someAddress.call.value(y)()</code> will send the provided ether and trigger code execution.<br />
-    The executed code is given all available gas for execution making this type of value transfer <em>unsafe</em> against reentrancy.</li>
-</ul>
-<p>Using <code>send()</code> or <code>transfer()</code> will prevent reentrancy but it does so at the cost of being incompatible with any contract whose fallback function requires more than 2,300 gas. It is also possible to use <code>someAddress.call.value(ethAmount).gas(gasAmount)()</code> to forward a custom amount of gas.</p>
-<p>One pattern that attempts to balance this trade-off is to implement both
-a <a href="#favor-pull-over-push-for-external-calls"><em>push</em> and <em>pull</em></a> mechanism, using <code>send()</code> or <code>transfer()</code>
-for the <em>push</em> component and <code>call.value()()</code> for the <em>pull</em> component.</p>
-<p>It is worth pointing out that exclusive use of <code>send()</code> or <code>transfer()</code> for value transfers
-does not itself make a contract safe against reentrancy but only makes those
-specific value transfers safe against reentrancy.</p>
+<h4 id="avoid-transfer-and-send">Avoid <code>transfer()</code> and <code>send()</code>.<a class="headerlink" href="#avoid-transfer-and-send" title="Permanent link">&para;</a></h4>
+<p><code>.transfer()</code> and <code>.send()</code> forward exactly 2,300 gas to the recipient. The goal of this hardcoded gas stipend was to prevent <a href="../known_attacks#reentrancy">reentrancy vulnerabilities</a>, but this only makes sense under the assumption that gas costs are constant. Recently <a href="https://eips.ethereum.org/EIPS/eip-1283">EIP 1283</a> (backed out of the Constantinople hard fork at the last minute) and <a href="https://eips.ethereum.org/EIPS/eip-1884">EIP 1884</a> (expected to arrive in the Istanbul hard fork) have shown this assumption to be invalid.</p>
+<p>To avoid things breaking when gas costs change in the future, it's best to use <code>.call.value(amount)(&quot;&quot;)</code> instead. Note that this does nothing to mitigate reentrancy attacks, so other precautions must be taken.</p>
 <hr />
 <h4 id="handle-errors-in-external-calls">Handle errors in external calls<a class="headerlink" href="#handle-errors-in-external-calls" title="Permanent link">&para;</a></h4>
 <p>Solidity offers low-level call methods that work on raw addresses: <code>address.call()</code>, <code>address.callcode()</code>, <code>address.delegatecall()</code>, and <code>address.send()</code>. These low-level methods never throw an exception, but will return <code>false</code> if the call encounters an exception. On the other hand, <em>contract calls</em> (e.g., <code>ExternalContract.doSomething()</code>) will automatically propagate a throw (for example, <code>ExternalContract.doSomething()</code> will also <code>throw</code> if <code>doSomething()</code> throws).</p>
 <p>If you choose to use the low-level call methods, make sure to handle the possibility that the call will fail, by checking the return value.</p>
 <div class="highlight"><pre><span></span><span class="c1">// bad</span>
 <span class="n">someAddress</span><span class="p">.</span><span class="nb">send</span><span class="p">(</span><span class="mi">55</span><span class="p">);</span>
-<span class="n">someAddress</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">55</span><span class="p">)();</span> <span class="c1">// this is doubly dangerous, as it will forward all remaining gas and doesn&#39;t check for result</span>
+<span class="n">someAddress</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">55</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span> <span class="c1">// this is doubly dangerous, as it will forward all remaining gas and doesn&#39;t check for result</span>
 <span class="n">someAddress</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">100</span><span class="p">)(</span><span class="kt">bytes4</span><span class="p">(</span><span class="nf">sha3</span><span class="p">(</span><span class="s">&quot;deposit()&quot;</span><span class="p">)));</span> <span class="c1">// if deposit throws an exception, the raw call() will only return false and transaction will NOT be reverted</span>
 
 <span class="c1">// good</span>
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">someAddress</span><span class="p">.</span><span class="nb">send</span><span class="p">(</span><span class="mi">55</span><span class="p">))</span> <span class="p">{</span>
+<span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="n">someAddress</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">55</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// handle failure code</span>
 <span class="p">}</span>
 
-<span class="n">ExternalContract</span><span class="p">(</span><span class="n">someAddress</span><span class="p">).</span><span class="n">deposit</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="n">ExternalContract</span><span class="p">(</span><span class="n">someAddress</span><span class="p">).</span><span class="n">deposit</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">100</span><span class="p">)();</span>
 </pre></div>
 
 <hr />
 <h4 id="favor-pull-over-push-for-external-calls">Favor <em>pull</em> over <em>push</em> for external calls<a class="headerlink" href="#favor-pull-over-push-for-external-calls" title="Permanent link">&para;</a></h4>
-<p>External calls can fail accidentally or deliberately. To minimize the damage caused by such failures, it is often better to isolate each external call into its own transaction that can be initiated by the recipient of the call. This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of <a href="../known_attacks#dos-with-block-gas-limit">problems with the gas limit</a>.)  Avoid combining multiple <code>transfer()</code> calls in a single transaction.</p>
+<p>External calls can fail accidentally or deliberately. To minimize the damage caused by such failures, it is often better to isolate each external call into its own transaction that can be initiated by the recipient of the call. This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of <a href="../known_attacks#dos-with-block-gas-limit">problems with the gas limit</a>.)  Avoid combining multiple ether transfers in a single transaction.</p>
 <div class="highlight"><pre><span></span><span class="c1">// bad</span>
 <span class="kd">contract</span> <span class="n">auction</span> <span class="p">{</span>
     <span class="kt">address</span> <span class="n">highestBidder</span><span class="p">;</span>
@@ -1140,7 +1125,8 @@ specific value transfers safe against reentrancy.</p>
         <span class="n">require</span><span class="p">(</span><span class="nb">msg</span><span class="p">.</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="n">highestBid</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">highestBidder</span> <span class="o">!=</span> <span class="kt">address</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
-            <span class="n">highestBidder</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">highestBid</span><span class="p">);</span> <span class="c1">// if this call consistently fails, no one else can bid</span>
+            <span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="n">highestBidder</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">highestBid</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+            <span class="n">require</span><span class="p">(</span><span class="n">success</span><span class="p">);</span> <span class="c1">// if this call consistently fails, no one else can bid</span>
         <span class="p">}</span>
 
        <span class="n">highestBidder</span> <span class="o">=</span> <span class="nb">msg</span><span class="p">.</span><span class="n">sender</span><span class="p">;</span>
@@ -1168,7 +1154,8 @@ specific value transfers safe against reentrancy.</p>
     <span class="kd">function</span> <span class="n">withdrawRefund</span><span class="p">()</span> <span class="kr">external</span> <span class="p">{</span>
         <span class="kt">uint</span> <span class="n">refund</span> <span class="o">=</span> <span class="n">refunds</span><span class="p">[</span><span class="nb">msg</span><span class="p">.</span><span class="n">sender</span><span class="p">];</span>
         <span class="n">refunds</span><span class="p">[</span><span class="nb">msg</span><span class="p">.</span><span class="n">sender</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nb">msg</span><span class="p">.</span><span class="n">sender</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">refund</span><span class="p">);</span>
+        <span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="nb">msg</span><span class="p">.</span><span class="n">sender</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">refund</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">require</span><span class="p">(</span><span class="n">success</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1274,10 +1261,10 @@ cannot be prevented. This is also true for</p>
     <span class="kd">function</span> <span class="n">sendHalf</span><span class="p">(</span><span class="kt">address</span> <span class="kr">payable</span> <span class="n">addr</span><span class="p">)</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint</span> <span class="nb">balance</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">require</span><span class="p">(</span><span class="nb">msg</span><span class="p">.</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Even value required.&quot;</span><span class="p">);</span> <span class="c1">//Require() can have an optional message string</span>
         <span class="kt">uint</span> <span class="n">balanceBeforeTransfer</span> <span class="o">=</span> <span class="kt">address</span><span class="p">(</span><span class="nb">this</span><span class="p">).</span><span class="nb">balance</span><span class="p">;</span>
-        <span class="n">addr</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="nb">msg</span><span class="p">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-        <span class="c1">// Since transfer throws an exception on failure and</span>
-        <span class="c1">// cannot call back here, there should be no way for us to</span>
-        <span class="c1">// still have half of the money.</span>
+        <span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="n">addr</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="nb">msg</span><span class="p">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">require</span><span class="p">(</span><span class="n">success</span><span class="p">);</span>
+        <span class="c1">// Since we reverted if the transfer failed, there should be</span>
+        <span class="c1">// no way for us to still have half of the money.</span>
         <span class="n">assert</span><span class="p">(</span><span class="kt">address</span><span class="p">(</span><span class="nb">this</span><span class="p">).</span><span class="nb">balance</span> <span class="o">==</span> <span class="n">balanceBeforeTransfer</span> <span class="o">-</span> <span class="nb">msg</span><span class="p">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// used for internal error checking</span>
         <span class="k">return</span> <span class="kt">address</span><span class="p">(</span><span class="nb">this</span><span class="p">).</span><span class="nb">balance</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1361,7 +1348,6 @@ cannot be prevented. This is also true for</p>
 <hr />
 <h3 id="explicitly-mark-payable-functions-and-state-variables">Explicitly mark payable functions and state variables<a class="headerlink" href="#explicitly-mark-payable-functions-and-state-variables" title="Permanent link">&para;</a></h3>
 <p>Starting from Solidity <code>0.4.0</code>, every function that is receiving ether must use <code>payable</code> modifier, otherwise if the transaction has <code>msg.value &gt; 0</code> will revert (<a href="../recommendations/#remember-that-ether-can-be-forcibly-sent-to-an-account">except when forced</a>).</p>
-<p>Declare variables and especially function arguments as <code>address payable</code>, if you want to call <code>transfer</code> on them. You can use <code>.transfer(..)</code> and <code>.send(..)</code> on <code>address payable</code>, but not on <code>address</code>. You can use a low-level <code>.call(..)</code> on both <code>address</code> and <code>address payable</code>, even if you attach value to it. This is not recommended.<sup><a href='https://ethereum.stackexchange.com/questions/64108/whats-the-difference-between-address-and-address-payable'>*</a></sup></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Something that might not be obvious: The <code>payable</code> modifier only applies to calls from <em>external</em> contracts. If I call a non-payable function in the payable function in the same contract, the non-payable function won't fail, though <code>msg.value</code> is still set</p>
@@ -1487,7 +1473,8 @@ cannot be prevented. This is also true for</p>
 
     <span class="kd">function</span> <span class="n">sendTo</span><span class="p">(</span><span class="kt">address</span> <span class="n">receiver</span><span class="p">,</span> <span class="kt">uint</span> <span class="n">amount</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
         <span class="n">require</span><span class="p">(</span><span class="nb">tx</span><span class="p">.</span><span class="n">origin</span> <span class="o">==</span> <span class="n">owner</span><span class="p">);</span>
-        <span class="n">receiver</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+        <span class="p">(</span><span class="kt">bool</span> <span class="n">success</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="n">receiver</span><span class="p">.</span><span class="nb">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">amount</span><span class="p">)(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+        <span class="n">require</span><span class="p">(</span><span class="n">success</span><span class="p">);</span>
     <span class="p">}</span>
 
 <span class="p">}</span>
